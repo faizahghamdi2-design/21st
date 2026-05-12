@@ -5,6 +5,9 @@ const supabaseUrl = 'https://lrpivntxdezuaatprkyj.supabase.co'
 const supabaseKey = 'sb_publishable_QXYJfyXxUJz1LERhUtW9_g_Y4WBEQEA'
 
 const supabase = createClient(supabaseUrl, supabaseKey)
+
+export async function POST(request: Request) {
+  try {
     const body = await request.json()
 
     const civil = body.civil?.trim()
@@ -18,25 +21,16 @@ const supabase = createClient(supabaseUrl, supabaseKey)
     }
 
     const { data, error } = await supabase
-      .from('تقييم الطالبات')
+      .from('students')
       .select('*')
-      .eq('id', civil)
-      .eq('كلمة المرور', password)
-      .maybeSingle()
+      .eq('civil', civil)
+      .eq('password', password)
+      .single()
 
-    if (error) {
-      console.error('Supabase error:', error)
-
+    if (error || !data) {
       return NextResponse.json(
-        { error: 'Something went wrong while fetching the student data' },
-        { status: 500 }
-      )
-    }
-
-    if (!data) {
-      return NextResponse.json(
-        { error: 'Civil ID or password is incorrect' },
-        { status: 404 }
+        { error: 'Invalid Civil ID or password' },
+        { status: 401 }
       )
     }
 
@@ -45,7 +39,7 @@ const supabase = createClient(supabaseUrl, supabaseKey)
     console.error('API error:', error)
 
     return NextResponse.json(
-      { error: 'Server error' },
+      { error: 'Something went wrong' },
       { status: 500 }
     )
   }
