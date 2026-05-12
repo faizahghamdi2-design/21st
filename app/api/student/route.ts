@@ -29,8 +29,8 @@ export async function POST(request: Request) {
 
     if (error || !data) {
       return NextResponse.json(
-        { error: 'Invalid Civil ID or password' },
-        { status: 401 }
+        { error: 'Civil ID or password is incorrect' },
+        { status: 404 }
       )
     }
 
