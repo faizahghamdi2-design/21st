@@ -27,12 +27,26 @@ export async function POST(request: Request) {
       .eq('password', password)
       .single()
 
-    if (error || !data) {
-      return NextResponse.json(
-        { error: 'Civil ID or password is incorrect' },
-        { status: 404 }
-      )
-    }
+ if (error) {
+  return NextResponse.json(
+    { 
+      error: 'Supabase error',
+      details: error.message 
+    },
+    { status: 500 }
+  )
+}
+
+if (!data) {
+  return NextResponse.json(
+    { 
+      error: 'No student found',
+      civilReceived: civil,
+      passwordReceived: password
+    },
+    { status: 404 }
+  )
+}
 
     return NextResponse.json({ student: data })
   } catch (error) {
