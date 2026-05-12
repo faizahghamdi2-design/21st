@@ -1,10 +1,10 @@
+import { createClient } from '@supabase/supabase-js'
+import { NextResponse } from 'next/server'
+
 const supabaseUrl = 'https://lrpivntxdezuaatprkyj.supabase.co'
 const supabaseKey = 'sb_publishable_QXYJfyXxUJz1LERhUtW9_g_Y4WBEQEA'
 
 const supabase = createClient(supabaseUrl, supabaseKey)
-
-export async function POST(request: Request) {
-  try {
     const body = await request.json()
 
     const civil = body.civil?.trim()
